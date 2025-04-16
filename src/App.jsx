@@ -4,10 +4,14 @@ import MainPage  from './component/MainPage';
 import DetailPage from './component/DetailPage';
 import About from './component/About';
 import Event from './component/Event';
+import data from './data.js';
 import { Navbar, Container, Nav } from 'react-bootstrap';
 import { Routes, Route, Link, useNavigate, Outlet } from 'react-router-dom';
+import { useState } from 'react';
 
 function App() {
+  let [shoes]  = useState(data);
+
   let navigate = useNavigate();  
 
   return (
@@ -25,7 +29,7 @@ function App() {
 
       <Routes>
         <Route path="/" element={ <MainPage />}/>
-        <Route path="/detail" element={ <DetailPage /> } />
+        <Route path="/detail/:id" element={ <DetailPage shoes={shoes} /> } />
         <Route path="/about" element={ <About /> }>
           <Route path="member" element={ <div>멤버 소개</div> } />
           <Route path="location" element={ <div>위치 정보</div> } />
