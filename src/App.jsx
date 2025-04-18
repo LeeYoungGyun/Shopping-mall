@@ -1,16 +1,30 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css'
-import MainPage  from './component/MainPage';
+import Card  from './component/Card.jsx';
 import DetailPage from './component/DetailPage';
 import About from './component/About';
 import Event from './component/Event';
 import data from './data.js';
 import { Navbar, Container, Nav } from 'react-bootstrap';
 import { Routes, Route, Link, useNavigate, Outlet } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
 
 function App() {
-  let [shoes]  = useState(data);
+  let [shoes, setShoes]  = useState(data);
+
+//   useEffect(() => {
+//     productInfo();
+//  }, [])
+
+ const productInfo = () => {
+    axios.get('https://codingapple1.github.io/shop/data2.json').then((data) => {
+       console.log('data===', data.data);
+       setShoes((prevShoes) => [...prevShoes, ...data.data]);
+    }).catch((err) => {
+      console.log('에러 발생:', err);
+    })
+ };
 
   let navigate = useNavigate();  
 
@@ -28,7 +42,21 @@ function App() {
       </Navbar>
 
       <Routes>
-        <Route path="/" element={ <MainPage />}/>
+        <Route path="/" element= {
+          <>
+            <div className='main-bg'></div>
+            <div className="container">
+              <div className='row'>
+                { shoes.map((item, index) =>{
+                  console.log('item===', item);
+                  return (<Card shoes={shoes[index]} i={index} key={index}></Card>)
+                })} 
+              </div>
+            </div>
+            <button onClick={productInfo}>더보기</button>
+          </>
+        }
+        />
         <Route path="/detail/:id" element={ <DetailPage shoes={shoes} /> } />
         <Route path="/about" element={ <About /> }>
           <Route path="member" element={ <div>멤버 소개</div> } />
