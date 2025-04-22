@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
+import { Nav, Tab } from "react-bootstrap";
 
 let YellowBtn = styled.button`
    background: ${ props => props.bg};
@@ -9,9 +10,9 @@ let YellowBtn = styled.button`
 `;
 
 const DetailPage = (props) => {
-
    let [closeDiv, setCloseDiv] = useState(false);
    let [value, setValue] = useState('');
+   let [tab, setTab] = useState(0);
 
    useEffect(() => {
       if (isNaN(value) === true) {
@@ -28,14 +29,23 @@ const DetailPage = (props) => {
    let {id} = useParams();
    let findItem = props.shoes.find((item) => item.id === Number(id));
 
+   let [fade2, setFade2] = useState('');
+
+   useEffect(() => {
+      setTimeout(() => {
+         setFade2('end');
+      }, 100);
+      return () => {
+         setFade2('');
+      }
+   }, []);
+
    const inputValue = (e) => {
       setValue(e.target.value);
-     
-      console.log(value);
    };
 
    return (
-      <div className="container">
+      <div className={`container start ${fade2}`}>
          {closeDiv ?
          null :
             <div className="alert alert-warning">
@@ -43,21 +53,60 @@ const DetailPage = (props) => {
             </div>
          }
          <YellowBtn bg="blue">버튼</YellowBtn>
-      <div className="row">
-         <div className="col-md-6">
-            <img src="https://codingapple1.github.io/shop/shoes1.jpg" width="100%" />
+         <div className="row">
+            <div className="col-md-6">
+               <img src={`https://codingapple1.github.io/shop/shoes${findItem.id + 1}.jpg`} width="100%" />
+            </div>
+            <div className="col-md-6">
+               {/* <input type="number"></input> */}
+               <input type="text" onChange={inputValue}></input>
+               <h4 className="pt-5">{findItem.title}</h4>
+               <p>{findItem.content}</p>
+               <p>{findItem.price}</p>
+               <button className="btn btn-danger">주문하기</button> 
+            </div>
          </div>
-         <div className="col-md-6">
-            {/* <input type="number"></input> */}
-            <input type="text" onChange={inputValue}></input>
-            <h4 className="pt-5">{findItem.title}</h4>
-            <p>{findItem.content}</p>
-            <p>{findItem.price}</p>
-            <button className="btn btn-danger">주문하기</button> 
-         </div>
-      </div>
+         <Nav variant="tabs"  defaultActiveKey="link0">
+            <Nav.Item>
+               <Nav.Link onClick={() => { setTab(0) }}  eventKey="link0">버튼0</Nav.Link>
+            </Nav.Item>
+            <Nav.Item>
+               <Nav.Link onClick={() => { setTab(1) }} eventKey="link1">버튼1</Nav.Link>
+            </Nav.Item>
+            <Nav.Item>
+               <Nav.Link onClick={() => { setTab(2) }} eventKey="link2">버튼2</Nav.Link>
+            </Nav.Item>
+         </Nav>
+         <Tabs tab={tab}></Tabs>
       </div>
    )
 };
+
+const Tabs = (props) => {
+
+   let [fade, setFade] = useState('');
+
+   useEffect(() => {
+      console.log('탭이 변경되었습니다.');
+      setTimeout(() => {
+         setFade('end'); 
+      }, 100);
+      // setFade('end');
+      return () => {
+         setFade('');
+         console.log('정리됨');
+      }
+   }, [props.tab]);
+
+  return (
+    <div className={`start ${fade}`}>
+      {props.tab === 0 && <div>내용0</div>}
+      {props.tab === 1 && <div>내용1</div>}
+      {props.tab === 2 && <div>내용2</div>}
+    </div>
+  );
+};
+
+
 
 export default DetailPage;

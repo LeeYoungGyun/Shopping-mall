@@ -11,28 +11,59 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 
 function App() {
+  const [loading, setLoading] = useState(false);
   let [shoes, setShoes]  = useState(data);
+  let [count, setCount] = useState(0);
 
 //   useEffect(() => {
-//     productInfo();
+    
 //  }, [])
 
  const productInfo = () => {
+    setLoading(true);
     axios.get('https://codingapple1.github.io/shop/data2.json').then((data) => {
-       console.log('data===', data.data);
        setShoes((prevShoes) => [...prevShoes, ...data.data]);
+       setLoading(false); // 로딩 상태를 초기화
     }).catch((err) => {
       console.log('에러 발생:', err);
+      setLoading(false); // 로딩 상태를 초기화
     })
  };
 
-  let navigate = useNavigate();  
+ const secondProductInfo = () => {
+    setLoading(true);
+    axios.get('https://codingapple1.github.io/shop/data3.json').then((data) => {
+      setShoes((prevShoes) => [...prevShoes, ...data.data]);
+      setLoading(false); // 로딩 상태를 초기화
+  }).catch((err) => {
+    console.log('에러 발생:', err);
+    setLoading(false); // 로딩 상태를 초기화
+  })
+ };
+
+ const moreProductInfo = () => {
+  if (count === 0) {
+    productInfo();
+    setCount((prev) => {
+      return prev + 1;
+    });
+  } else if (count === 1) {
+    secondProductInfo();
+    setCount((prev) => {
+      return prev + 1;
+    });
+  } else if (count > 1) {
+    alert('더이상 상품이 없습니다.');
+  }
+ };
+
+  let navigate = useNavigate();
 
   return (
     <div className='App'>
       <Navbar bg="primary" data-bs-theme="dark">
         <Container>
-          <Navbar.Brand href="#home">Navbar</Navbar.Brand>
+          <Navbar.Brand href="/">Navbar</Navbar.Brand>
           <Nav className="me-auto">
             <Link to='/'>홈</Link>
             <Link to='/detail' style={{ marginLeft: '20px'}} >상세페이지</Link>
@@ -53,7 +84,14 @@ function App() {
                 })} 
               </div>
             </div>
-            <button onClick={productInfo}>더보기</button>
+            {count < 2 ? <button onClick={moreProductInfo}>더보기</button> : null}
+            {loading && (
+            <div className="d-flex justify-content-center mt-3">
+              <div className="spinner-border text-primary" role="status">
+                <span className="visually-hidden">Loading...</span>
+              </div>
+            </div>
+          )}
           </>
         }
         />
