@@ -5,19 +5,17 @@ import DetailPage from './component/DetailPage';
 import About from './component/About';
 import Event from './component/Event';
 import data from './data.js';
+import Cart from './routes/Cart.jsx';
 import { Navbar, Container, Nav } from 'react-bootstrap';
-import { Routes, Route, Link, useNavigate, Outlet } from 'react-router-dom';
-import { useState, useEffect } from 'react';
+import { Routes, Route, Link, useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 import axios from 'axios';
+
 
 function App() {
   const [loading, setLoading] = useState(false);
   let [shoes, setShoes]  = useState(data);
   let [count, setCount] = useState(0);
-
-//   useEffect(() => {
-    
-//  }, [])
 
  const productInfo = () => {
     setLoading(true);
@@ -76,10 +74,9 @@ function App() {
         <Route path="/" element= {
           <>
             <div className='main-bg'></div>
-            <div className="container">
+            <div className="container-fluid">
               <div className='row'>
                 { shoes.map((item, index) =>{
-                  console.log('item===', item);
                   return (<Card shoes={shoes[index]} i={index} key={index}></Card>)
                 })} 
               </div>
@@ -96,6 +93,7 @@ function App() {
         }
         />
         <Route path="/detail/:id" element={ <DetailPage shoes={shoes} /> } />
+        <Route path="/cart" element={ <Cart shoes={shoes} /> } />
         <Route path="/about" element={ <About /> }>
           <Route path="member" element={ <div>멤버 소개</div> } />
           <Route path="location" element={ <div>위치 정보</div> } />
@@ -107,10 +105,6 @@ function App() {
         <Route path="*" element={<div>Error 404</div>} />
       </Routes>
     </div>
-
-
-
-
   )
 }
 

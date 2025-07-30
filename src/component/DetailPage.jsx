@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
-import { Nav, Tab } from "react-bootstrap";
+import { Nav } from "react-bootstrap";
 
 let YellowBtn = styled.button`
    background: ${ props => props.bg};
@@ -10,6 +10,7 @@ let YellowBtn = styled.button`
 `;
 
 const DetailPage = (props) => {
+
    let [closeDiv, setCloseDiv] = useState(false);
    let [value, setValue] = useState('');
    let [tab, setTab] = useState(0);
@@ -46,6 +47,7 @@ const DetailPage = (props) => {
 
    return (
       <div className={`container start ${fade2}`}>
+         
          {closeDiv ?
          null :
             <div className="alert alert-warning">
@@ -83,7 +85,6 @@ const DetailPage = (props) => {
 };
 
 const Tabs = (props) => {
-
    let [fade, setFade] = useState('');
 
    useEffect(() => {
@@ -99,7 +100,7 @@ const Tabs = (props) => {
    }, [props.tab]);
 
   return (
-    <div className={`start ${fade}`}>
+     <div className={`start ${fade}`}>
       {props.tab === 0 && <div>내용0</div>}
       {props.tab === 1 && <div>내용1</div>}
       {props.tab === 2 && <div>내용2</div>}
