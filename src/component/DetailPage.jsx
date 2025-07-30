@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import { Nav } from "react-bootstrap";
+import { useDispatch, useSelector } from 'react-redux'
+import { addCartItem } from '../store'
 
 let YellowBtn = styled.button`
    background: ${ props => props.bg};
@@ -14,6 +16,8 @@ const DetailPage = (props) => {
    let [closeDiv, setCloseDiv] = useState(false);
    let [value, setValue] = useState('');
    let [tab, setTab] = useState(0);
+   let state = useSelector((state) => state)
+   let dispatch = useDispatch();
 
    useEffect(() => {
       if (isNaN(value) === true) {
@@ -45,6 +49,10 @@ const DetailPage = (props) => {
       setValue(e.target.value);
    };
 
+   const goCart = () => {
+      dispatch(addCartItem(findItem));
+   };
+
    return (
       <div className={`container start ${fade2}`}>
          
@@ -65,7 +73,9 @@ const DetailPage = (props) => {
                <h4 className="pt-5">{findItem.title}</h4>
                <p>{findItem.content}</p>
                <p>{findItem.price}</p>
-               <button className="btn btn-danger">주문하기</button> 
+               <button className="btn btn-danger" onClick={goCart}>주문하기</button>
+               <h2>cart 정보:</h2>
+               <pre>{JSON.stringify(state.cart, null, 2)}</pre>
             </div>
          </div>
          <Nav variant="tabs"  defaultActiveKey="link0">
@@ -86,9 +96,11 @@ const DetailPage = (props) => {
 
 const Tabs = (props) => {
    let [fade, setFade] = useState('');
+   console.log('props===', props);
 
    useEffect(() => {
       console.log('탭이 변경되었습니다.');
+
       setTimeout(() => {
          setFade('end'); 
       }, 100);
@@ -107,7 +119,5 @@ const Tabs = (props) => {
     </div>
   );
 };
-
-
 
 export default DetailPage;
