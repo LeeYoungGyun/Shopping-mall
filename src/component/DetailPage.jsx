@@ -2,24 +2,24 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import { Nav } from "react-bootstrap";
-import { useDispatch } from 'react-redux'
-import { addCartItem } from '../store'
+import { useDispatch } from 'react-redux';
+import { addCartItem } from '../store';
 
-let YellowBtn = styled.button`
-   background: ${ props => props.bg};
+const YellowBtn = styled.button`
+   background: ${props => props.bg};
    color: black;
    padding: 10px;
 `;
 
 const DetailPage = (props) => {
-   let [closeDiv, setCloseDiv] = useState(false);
-   let [value, setValue] = useState('');
-   let [tab, setTab] = useState(0);
-   let [fade2, setFade2] = useState('');
+   const [closeDiv, setCloseDiv] = useState(false);
+   const [value, setValue] = useState('');
+   const [tab, setTab] = useState(0);
+   const [fade2, setFade2] = useState('');
    
-   let dispatch = useDispatch();
-   let {id} = useParams();
-   let findItem = props.shoes.find((item) => item.id === Number(id));
+   const dispatch = useDispatch();
+   const { id } = useParams();
+   const findItem = props.shoes.find((item) => item.id === Number(id));
 
    useEffect(() => {
       if (isNaN(value) === true) {
@@ -43,7 +43,7 @@ const DetailPage = (props) => {
       }, 100);
       return () => {
          setFade2('');
-      }
+      };
    }, []);
 
    const inputValue = (e) => {
@@ -56,9 +56,8 @@ const DetailPage = (props) => {
 
    return (
       <div className={`container start ${fade2}`}>
-         
-         {closeDiv ?
-         null :
+         {closeDiv ? 
+            null :
             <div className="alert alert-warning">
                2초이내 구매시 할인
             </div>
@@ -66,7 +65,11 @@ const DetailPage = (props) => {
          <YellowBtn bg="blue">버튼</YellowBtn>
          <div className="row">
             <div className="col-md-6">
-               <img src={`https://codingapple1.github.io/shop/shoes${findItem.id + 1}.jpg`} width="100%" />
+               <img 
+                  src={`https://codingapple1.github.io/shop/shoes${findItem.id + 1}.jpg`} 
+                  width="100%" 
+                  alt={findItem.title}
+               />
             </div>
             <div className="col-md-6">
                <input type="text" onChange={inputValue}></input>
@@ -76,24 +79,24 @@ const DetailPage = (props) => {
                <button className="btn btn-danger" onClick={goCart}>주문하기</button>
             </div>
          </div>
-         <Nav variant="tabs"  defaultActiveKey="link0">
+         <Nav variant="tabs" defaultActiveKey="link0">
             <Nav.Item>
-               <Nav.Link onClick={() => { setTab(0) }}  eventKey="link0">버튼0</Nav.Link>
+               <Nav.Link onClick={() => { setTab(0); }} eventKey="link0">버튼0</Nav.Link>
             </Nav.Item>
             <Nav.Item>
-               <Nav.Link onClick={() => { setTab(1) }} eventKey="link1">버튼1</Nav.Link>
+               <Nav.Link onClick={() => { setTab(1); }} eventKey="link1">버튼1</Nav.Link>
             </Nav.Item>
             <Nav.Item>
-               <Nav.Link onClick={() => { setTab(2) }} eventKey="link2">버튼2</Nav.Link>
+               <Nav.Link onClick={() => { setTab(2); }} eventKey="link2">버튼2</Nav.Link>
             </Nav.Item>
          </Nav>
          <Tabs tab={tab}></Tabs>
       </div>
-   )
+   );
 };
 
 const Tabs = (props) => {
-   let [fade, setFade] = useState('');
+   const [fade, setFade] = useState('');
 
    useEffect(() => {
       setTimeout(() => {
@@ -101,7 +104,7 @@ const Tabs = (props) => {
       }, 100);
       return () => {
          setFade('');
-      }
+      };
    }, [props.tab]);
 
    return (

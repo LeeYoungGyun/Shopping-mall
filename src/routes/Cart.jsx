@@ -1,11 +1,11 @@
-import { Table } from 'react-bootstrap'
-import { useDispatch, useSelector } from 'react-redux'
+import { Table } from 'react-bootstrap';
+import { useDispatch, useSelector } from 'react-redux';
 import { changeName, increaseAge } from './../store/userSlice';
 import { increasQuantity, decreaseQuantity, removeCartItem } from '../store';
 
 const Cart = () => {
-   let state = useSelector((state) => state)
-   let dispatch = useDispatch();
+   const state = useSelector((state) => state);
+   const dispatch = useDispatch();
 
    const increase = (item) => {
       dispatch(changeName());
@@ -41,26 +41,24 @@ const Cart = () => {
                </tr>
             </thead>
             <tbody>
-            {
-               state.cart.map((item, i) => (
+               {state.cart.map((item, i) => (
                   <tr key={i}>
                      <td>{item.id}</td>
                      <td>{item.title}</td>
                      <td>{item.count}</td>
                      <td>
-                     <button onClick={() => increase(item)}>+</button>
-                     <button onClick={() => decrease(item)}>-</button>
+                        <button onClick={() => increase(item)}>+</button>
+                        <button onClick={() => decrease(item)}>-</button>
                      </td>
                      <td>
                         <button onClick={() => removeItem(item)}>삭제</button>
                      </td>
                   </tr>
-               ))
-            }
+               ))}
             </tbody>
          </Table> 
       </div>
-   )
+   );
 };
 
 export default Cart;
