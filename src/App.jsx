@@ -4,15 +4,21 @@ import Card  from './component/Card.jsx';
 import DetailPage from './component/DetailPage';
 import About from './component/About';
 import Event from './component/Event';
+import RecentViewed from './component/RecentViewed';
 import data from './data.js';
 import Cart from './routes/Cart.jsx';
 import { Navbar, Container, Nav } from 'react-bootstrap';
 import { Routes, Route, Link, useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import axios from 'axios';
 
 
 function App() {
+
+  useEffect(()=> {
+    localStorage.setItem('watched', JSON.stringify([]));
+  }, [])
+  
   const [loading, setLoading] = useState(false);
   let [shoes, setShoes]  = useState(data);
   let [count, setCount] = useState(0);
@@ -80,6 +86,7 @@ function App() {
                   return (<Card shoes={shoes[index]} i={index} key={index}></Card>)
                 })} 
               </div>
+
             </div>
             {count < 2 ? <button onClick={moreProductInfo}>더보기</button> : null}
             {loading && (
@@ -104,8 +111,10 @@ function App() {
         </Route>
         <Route path="*" element={<div>Error 404</div>} />
       </Routes>
+      <RecentViewed shoes={shoes} />
     </div>
   )
 }
 
 export default App
+

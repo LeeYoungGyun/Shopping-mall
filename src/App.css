@@ -24,3 +24,147 @@
   height: 40vmin;
   pointer-events: none;
 }
+
+/* 최근 본 상품 스타일 */
+.recent-viewed {
+  position: fixed;
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%);
+  z-index: 1000;
+  transition: right 0.3s ease;
+}
+
+.recent-viewed.open {
+  right: 0;
+}
+
+.recent-tab {
+  position: absolute;
+  left: -120px;
+  top: 0;
+  width: 120px;
+  height: 120px;
+  background-color: #007bff;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border-radius: 10px 0 0 10px;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.tab-text {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  line-height: 1.2;
+}
+
+.tab-text div {
+  margin: 1px 0;
+}
+
+.recent-tab:hover {
+  background-color: #0056b3;
+}
+
+.recent-tab .arrow {
+  margin-top: 8px;
+  font-size: 12px;
+}
+
+.recent-content {
+  width: 300px;
+  height: 450px;
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 10px 0 0 10px;
+  box-shadow: -2px 0 10px rgba(0,0,0,0.1);
+  overflow: hidden;
+}
+
+.recent-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+  border-bottom: 1px solid #eee;
+  background-color: #f8f9fa;
+}
+
+.recent-header h6 {
+  margin: 0;
+  font-weight: bold;
+}
+
+.close-btn {
+  cursor: pointer;
+  font-size: 18px;
+  color: #999;
+}
+
+.close-btn:hover {
+  color: #333;
+}
+
+.no-items {
+  padding: 50px 20px;
+  text-align: center;
+  color: #999;
+}
+
+.recent-list {
+  padding: 10px;
+  height: calc(100% - 70px);
+  overflow-y: auto;
+}
+
+.recent-item {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.recent-item:hover {
+  background-color: #f8f9fa;
+  transform: translateX(-5px);
+}
+
+.recent-item img {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 5px;
+  margin-right: 10px;
+}
+
+.item-info {
+  flex: 1;
+  text-align: left;
+}
+
+.item-title {
+  margin: 0 0 5px 0;
+  font-size: 14px;
+  font-weight: bold;
+  color: #333;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.item-price {
+  margin: 0;
+  font-size: 12px;
+  color: #007bff;
+  font-weight: bold;
+}

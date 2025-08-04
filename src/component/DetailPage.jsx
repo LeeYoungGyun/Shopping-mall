@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import { Nav } from "react-bootstrap";
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { addCartItem } from '../store'
 
 let YellowBtn = styled.button`
@@ -12,12 +12,14 @@ let YellowBtn = styled.button`
 `;
 
 const DetailPage = (props) => {
-
    let [closeDiv, setCloseDiv] = useState(false);
    let [value, setValue] = useState('');
    let [tab, setTab] = useState(0);
-   let state = useSelector((state) => state)
+   let [fade2, setFade2] = useState('');
+   
    let dispatch = useDispatch();
+   let {id} = useParams();
+   let findItem = props.shoes.find((item) => item.id === Number(id));
 
    useEffect(() => {
       if (isNaN(value) === true) {
@@ -29,12 +31,11 @@ const DetailPage = (props) => {
       }, 2000);
    }, [value]);
 
-
-
-   let {id} = useParams();
-   let findItem = props.shoes.find((item) => item.id === Number(id));
-
-   let [fade2, setFade2] = useState('');
+   useEffect(() => {
+      const watched = JSON.parse(localStorage.getItem('watched')) || [];
+      const newWatched = [...new Set([...watched, findItem.id])];
+      localStorage.setItem('watched', JSON.stringify(newWatched));
+   }, [findItem.id]);
 
    useEffect(() => {
       setTimeout(() => {
@@ -68,14 +69,11 @@ const DetailPage = (props) => {
                <img src={`https://codingapple1.github.io/shop/shoes${findItem.id + 1}.jpg`} width="100%" />
             </div>
             <div className="col-md-6">
-               {/* <input type="number"></input> */}
                <input type="text" onChange={inputValue}></input>
                <h4 className="pt-5">{findItem.title}</h4>
                <p>{findItem.content}</p>
                <p>{findItem.price}</p>
                <button className="btn btn-danger" onClick={goCart}>주문하기</button>
-               <h2>cart 정보:</h2>
-               <pre>{JSON.stringify(state.cart, null, 2)}</pre>
             </div>
          </div>
          <Nav variant="tabs"  defaultActiveKey="link0">
@@ -96,28 +94,23 @@ const DetailPage = (props) => {
 
 const Tabs = (props) => {
    let [fade, setFade] = useState('');
-   console.log('props===', props);
 
    useEffect(() => {
-      console.log('탭이 변경되었습니다.');
-
       setTimeout(() => {
          setFade('end'); 
       }, 100);
-      // setFade('end');
       return () => {
          setFade('');
-         console.log('정리됨');
       }
    }, [props.tab]);
 
-  return (
-     <div className={`start ${fade}`}>
-      {props.tab === 0 && <div>내용0</div>}
-      {props.tab === 1 && <div>내용1</div>}
-      {props.tab === 2 && <div>내용2</div>}
-    </div>
-  );
+   return (
+      <div className={`start ${fade}`}>
+         {props.tab === 0 && <div>내용0</div>}
+         {props.tab === 1 && <div>내용1</div>}
+         {props.tab === 2 && <div>내용2</div>}
+      </div>
+   );
 };
 
 export default DetailPage;
